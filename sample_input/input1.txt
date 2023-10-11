@@ -1,0 +1,4 @@
+/*Please add your sample inputs 
+here specific to the problem statement*/
+ADD-COURSE-OFFERING JAVA JAMES 15062022 2 5
+ADD-COURSE-OFFERING KUBERNETES WOODY 16062022 1 2
