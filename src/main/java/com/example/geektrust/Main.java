@@ -7,41 +7,46 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        CourseRegistration app = new CourseRegistration();
+        CourseManagementSystem cms = new CourseManagementSystem();
 
         try {
-            FileInputStream fis = new FileInputStream(args[0]);
-            Scanner sc = new Scanner(fis);
+            FileInputStream f = new FileInputStream(args[0]);
+            Scanner sc = new Scanner(f);
 
             while (sc.hasNextLine()) {
                 String line = sc.nextLine();
-                String[] parts = line.split(" ");
+                String[] words = line.split(" ");
 
-                if (parts.length > 0) {
-                    String command = parts[0];
+                if (words.length > 0) {
+                    String command = words[0];
 
                     if (command.equals("ADD-COURSE-OFFERING")) {
-                        if (parts.length >= 6) {
-                            String courseTitle = parts[1];
-                            String instructor = parts[2];
-                            String date = parts[3];
-                            int minEmployees = Integer.parseInt(parts[4]);
-                            int maxEmployees = Integer.parseInt(parts[5]);
-                            app.addCourseOffering(courseTitle, instructor, date, minEmployees, maxEmployees);
-                            app.print();
+                        if (words.length >= 6) {
+                            String courseTitle = words[1];
+                            String instructor = words[2];
+                            String date = words[3];
+                            int minEmployees = Integer.parseInt(words[4]);
+                            int maxEmployees = Integer.parseInt(words[5]);
+                            cms.addCourseOffering(courseTitle, instructor, date, minEmployees, maxEmployees);
                         }
                         else {
-                            System.out.println(Constants.INPUT_DATA_ERROR);
+                            System.out.println(Statuses.INPUT_DATA_ERROR);
                         }
                     } else if (command.equals("REGISTER")) {
-                        // Handle registration command
-                        // Parse and process registration details
+                        if (words.length >= 3) {
+                            String emailId = words[1];
+                            String courseId = words[2];
+                            cms.registerEmployee(courseId,emailId);
+                        }
+                        else{
+                            System.out.println(Statuses.INPUT_DATA_ERROR);
+                        }
                     } else if (command.equals("CANCEL")) {
-                        // Handle cancellation command
-                        // Parse and process cancellation details
-                    } else if (command.equals("COURSE-ALLOTMENT")) {
-                        // Handle course allotment command
-                        // Perform course allotment and print the final list
+                        String courseRegistrationId = words[1];
+                        cms.cancelRegistration(courseRegistrationId);
+                    } else if (command.equals("ALLOT")) {
+                        String courseId = words[1];
+                        cms.allotCourse(courseId);
                     }
                 }
             }

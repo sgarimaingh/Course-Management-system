@@ -10,7 +10,7 @@ public class CourseOffering {
     private String date;
     private int minEmployees;
     private int maxEmployees;
-    private ArrayList<Employee> registeredEmployees;
+    private ArrayList<Employee> registeredEmployees = new ArrayList<>();
 
     public void setCourseId(String courseId){
         this.courseId = courseId;
@@ -37,7 +37,6 @@ public class CourseOffering {
     public ArrayList<Employee> getRegisteredEmployees(){
         return this.registeredEmployees;
     }
-
 
     public CourseOffering(String courseTitle, String instructor, String date, int minEmployees, int maxEmployees){
         this.courseTitle = courseTitle;
