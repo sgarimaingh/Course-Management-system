@@ -30,21 +30,21 @@ public class CourseManagementSystem {
         CourseOffering courseOffering = getCourseOfferingById(courseId);
         if (courseOffering.getRegisteredEmployees().size() >= courseOffering.getMaxEmployees()) {
             System.out.println(Statuses.COURSE_FULL_ERROR);
+            return;
         }
 
         String name = emailId.substring(0, emailId.indexOf('@'));
         Employee employee = new Employee(name,emailId);
         courseOffering.getRegisteredEmployees().add(employee);
-
+        String courseRegistrationId = "REG-COURSE-"+ name + "-" + courseOffering.getCourseTitle();
+        courseRegistrationToCourseIdMap.put(courseRegistrationId, courseId);
+        employee.setRegistrationNumber(courseRegistrationId);
+        employees.add(employee);
+        System.out.println(courseOffering.getRegisteredEmployees().size());
         if (courseOffering.getRegisteredEmployees().size() >= courseOffering.getMinEmployees()) {
-            String courseRegistrationId = "REG-COURSE-"+ name + "-" + courseOffering.getCourseTitle();
             System.out.println(courseRegistrationId + " " + Statuses.ACCEPTED);
-
-            courseRegistrationToCourseIdMap.put(courseRegistrationId, courseId);
-
-            employee.setRegistrationNumber(courseRegistrationId);
             employee.setCourseStatus(Statuses.ACCEPTED);
-            employees.add(employee);
+
         } else {
             if (isCourseCanceled(courseOffering)) {
                 System.out.println(Statuses.COURSE_CANCELLED);
@@ -64,9 +64,11 @@ public class CourseManagementSystem {
             for(Employee employee: courseOffering.getRegisteredEmployees()){
                 String registrationNumber = employee.getRegistrationNumber();
                 String email = employee.getEmail();
+                String courseStatus = employee.getCourseStatus().equals(Statuses.COURSE_CANCELLED)? Statuses.COURSE_CANCELLED : Statuses.CONFIRMED;
                 System.out.println(registrationNumber + " " + email + " " + courseId + " " + courseOffering.getCourseTitle()
-                + " " + courseOffering.getInstructor() + " " + courseOffering.getDate() + " " + Statuses.CONFIRMED);
-                employee.setCourseStatus(Statuses.CONFIRMED);
+                + " " + courseOffering.getInstructor() + " " + courseOffering.getDate() + " " + courseStatus);
+                employee.setCourseStatus(courseStatus);
+
             }
         }
     }
