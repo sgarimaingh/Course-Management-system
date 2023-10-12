@@ -80,11 +80,13 @@ public class CourseManagementSystem {
                 emp = employee;
             }
         }
-        if(emp.getStatus().equals(Statuses.CONFIRMED)){
+        if(emp.getCourseStatus().equals(Statuses.CONFIRMED)){
             System.out.println(courseRegistrationId + " " + Statuses.CANCEL_REJECTED);
+            emp.setCourseStatus(Statuses.CANCEL_REJECTED);
         }
         else {
             System.out.println(courseRegistrationId + " " + Statuses.CANCEL_ACCEPTED);
+            emp.setCourseStatus(Statuses.CANCEL_ACCEPTED);
         }
         String courseId = courseRegistrationToCourseIdMap.get(courseRegistrationId);
         if (courseId != null) {
@@ -118,5 +120,13 @@ public class CourseManagementSystem {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public ArrayList<CourseOffering> getCourseOfferings(){
+        return courseOfferings;
+    }
+
+    public ArrayList<Employee> getEmployees(){
+        return employees;
     }
 }

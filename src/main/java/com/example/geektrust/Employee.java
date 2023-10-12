@@ -29,7 +29,7 @@ public class Employee {
         return this.email;
     }
 
-    public String getStatus(){
+    public String getCourseStatus(){
         return this.courseStatus;
     }
 
