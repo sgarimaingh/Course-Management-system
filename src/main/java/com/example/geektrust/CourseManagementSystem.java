@@ -1,6 +1,5 @@
 package com.example.geektrust;
 
-import java.io.Console;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -17,11 +16,10 @@ public class CourseManagementSystem {
 
 
     // Method to add course offerings
-    public void addCourseOffering(String courseTitle, String instructor, String date, int minEmployees, int maxEmployees) {
-        CourseOffering newCourse = new CourseOffering(courseTitle, instructor, date, minEmployees, maxEmployees);
-        String courseId = "OFFERING-"+ courseTitle + "-" + instructor;
-        newCourse.setCourseId(courseId);
-        courseOfferings.add(newCourse);
+    public void addCourseOffering(CourseOffering course) {
+        String courseId = "OFFERING-"+ course.getCourseTitle() + "-" + course.getInstructor();
+        course.setCourseId(courseId);
+        courseOfferings.add(course);
         System.out.println(courseId);
     }
 
@@ -40,17 +38,11 @@ public class CourseManagementSystem {
         courseRegistrationToCourseIdMap.put(courseRegistrationId, courseId);
         employee.setRegistrationNumber(courseRegistrationId);
         employees.add(employee);
-        System.out.println(courseOffering.getRegisteredEmployees().size());
-        if (courseOffering.getRegisteredEmployees().size() >= courseOffering.getMinEmployees()) {
-            System.out.println(courseRegistrationId + " " + Statuses.ACCEPTED);
-            employee.setCourseStatus(Statuses.ACCEPTED);
+        System.out.println(courseRegistrationId + " " + Statuses.ACCEPTED);
+        employee.setCourseStatus(Statuses.ACCEPTED);
 
-        } else {
-            if (isCourseCanceled(courseOffering)) {
-                System.out.println(Statuses.COURSE_CANCELLED);
-                employee.setCourseStatus(Statuses.COURSE_CANCELLED);
-            }
-
+        if (courseOffering.getRegisteredEmployees().size() < courseOffering.getMinEmployees() && isCourseCanceled(courseOffering)) {
+                employee.setCourseStatus(Statuses.COURSE_CANCELED);
         }
     }
 
@@ -64,7 +56,7 @@ public class CourseManagementSystem {
             for(Employee employee: courseOffering.getRegisteredEmployees()){
                 String registrationNumber = employee.getRegistrationNumber();
                 String email = employee.getEmail();
-                String courseStatus = employee.getCourseStatus().equals(Statuses.COURSE_CANCELLED)? Statuses.COURSE_CANCELLED : Statuses.CONFIRMED;
+                String courseStatus = employee.getCourseStatus().equals(Statuses.COURSE_CANCELED)? Statuses.COURSE_CANCELED : Statuses.CONFIRMED;
                 System.out.println(registrationNumber + " " + email + " " + courseId + " " + courseOffering.getCourseTitle()
                 + " " + courseOffering.getInstructor() + " " + courseOffering.getDate() + " " + courseStatus);
                 employee.setCourseStatus(courseStatus);

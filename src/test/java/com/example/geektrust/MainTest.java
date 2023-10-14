@@ -24,7 +24,8 @@ public class MainTest {
         // Save the initial size of the course offerings list
         int initialSize = cms.getCourseOfferings().size();
 
-        cms.addCourseOffering(courseTitle, instructor, date, minEmployees, maxEmployees);
+        CourseOffering newCourse = new CourseOffering(courseTitle, instructor, date, minEmployees, maxEmployees);
+        cms.addCourseOffering(newCourse);
 
         CourseOffering addedCourse = cms.getCourseOfferings().get(initialSize);
 
